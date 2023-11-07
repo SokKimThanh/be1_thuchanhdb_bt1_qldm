@@ -1,0 +1,60 @@
+1/11/2023 8:14 SA
+Sok Kim Thanh
+Thao tác CRUD phpMyAdmin Database Quản lý bán hàng Danh mục table
+===============================================
+Trình tự làm CRUD
+Thứ tự các bước làm bài tập
+Cách sử dụng file này: 
+* Viết Comment cẩn thận tên, mssv, ngày làm, mô tả file code
+* Phân tích mã để biết mình sẽ có 2 phần lớn là Soạn DB và Soạn UI
+* Phân tích mã để biết thứ tự hoạt động của function (store) SQL sẽ có ít nhất 6 việc chính là 
+1. Tạo Câu SQL; 
+2. Có thể có ít nhất một tham số cần truyền Bind Param hoặc không có tham số nào;
+3. Kiểm tra duyệt execute câu SQL
+4. Đóng SQL  .close();
+5. Có thể có giá trị trả về hoặc không có giá trị nào được trả về. Cần trả về mã lỗi để biết SQL thực thi thành công hay thất bại
+* -1: Lỗi đầu vào
+* -2: Lỗi truy vấn
+* 0: Thực thi truy vấn thành công
+6. Xử lý ngoại lệ throw new Exception trước khi trả về return mã lỗi.
+===============================================
+Phần 1: Soạn DB
+1/ Kết nối db trên mysql server port 3306
+2/ Sửa lỗi kết nối
+3/ Tạo db db_quanlybanhang
+4/ Tạo table tbl_danhmuc
+5/ Thao tác thêm xóa sửa tìm kiếm tất cả, tìm kiếm một danh mục
+6/ Unit test từng hàm thêm xóa sửa tìm kiếm
+7/ Xử lý ngoại lệ
+===============================================
+Phần 2: Soạn UI
+1/ Controller: Tạo file ListDanhMuc.php Danh sách danh mục viết các chức năng THÊM, XÓA, SỬA, TÌM KIẾM
+2/ View: Tạo File view_danhmuc.php Copy giao diện table bootstrap 5
+3/ Gọi hàm lấy thông tin
+4/ Đổ dữ liệu vào bảng
+
+
+
+public function __construct($id) {
+        if (strlen($id) != 11 || !is_numeric($id)) {
+            throw new Exception("ID không hợp lệ.");
+        }
+    }
+class MyClass {
+    public function __construct($id) {
+        if (!preg_match('/^\d{11}$/', $id)) {
+            throw new Exception("ID không hợp lệ.");
+        }
+    }
+}
+class MyClass {
+    public function __construct($id) {
+        if (strlen($id) != 11 || !is_numeric($id)) {
+            trigger_error("ID không hợp lệ.", E_USER_ERROR);
+        }
+    }
+}
+$result = mysqli_query($conn, "SELECT * FROM table WHERE id = $id");
+if (mysqli_num_rows($result) > 0) {
+    die("ID đã tồn tại trong cơ sở dữ liệu.");
+}
